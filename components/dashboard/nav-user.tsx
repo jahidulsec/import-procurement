@@ -35,17 +35,15 @@ export function NavUser({
 }: {
   user: {
     name: string
-    email: string
+    role: string
     avatar: string
   }
 }) {
   const { isMobile } = useSidebar()
 
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild className="max-w-48">
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
@@ -56,7 +54,7 @@ export function NavUser({
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate text-xs">{user.role}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -75,7 +73,7 @@ export function NavUser({
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate text-xs">{user.role}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
@@ -108,7 +106,5 @@ export function NavUser({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
   )
 }

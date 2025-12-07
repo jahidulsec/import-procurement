@@ -8,9 +8,6 @@ import {
   Settings,
 } from "lucide-react";
 
-import { NavMain } from "@/components/shared/dashboard/nav-main";
-import { NavUser } from "@/components/shared/dashboard/nav-user";
-import { TeamSwitcher } from "@/components/shared/dashboard/team-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -18,6 +15,9 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { TeamSwitcher } from "./team-switcher";
+import { NavMain } from "./nav-main";
+import { NavUser } from "./nav-user";
 
 // This is sample data.
 const data = {
@@ -62,7 +62,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
