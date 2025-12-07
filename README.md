@@ -20,8 +20,6 @@ A modern and responsive **Web App** and **Admin Panel** built with **Next.js**, 
 ## 📁 Folder Structure
 
 ```bash
-.
-
 ├── app/                 # App router pages
 ├── components/          # Shared UI components
 │   ├── shared/          # feature name
