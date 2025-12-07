@@ -1,0 +1,9 @@
+services:
+  sales_khub_quiz:
+    build: .
+    container_name: sales_khub_quiz
+    restart: always
+    ports:
+      - "5012:5012"
+    env_file:
+      - .env
