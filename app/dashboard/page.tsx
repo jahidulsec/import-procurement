@@ -35,8 +35,8 @@ const CardSection = async () => {
 
   const data = {
     delivered:
-      count.filter((item) => item.status === "delivered")?.[0]._count ?? 0,
-    pending: count.filter((item) => item.status === "pending")?.[0]._count ?? 0,
+      count.filter((item) => item.status === "delivered")?.[0]?._count ?? 0,
+    pending: count.filter((item) => item.status === "pending")?.[0]?._count ?? 0,
   };
 
   return (

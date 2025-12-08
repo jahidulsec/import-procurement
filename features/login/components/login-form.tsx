@@ -18,7 +18,7 @@ import { userLogin } from "../action/login";
 import { toast } from "sonner";
 import { user } from "@/lib/generated/prisma";
 import { Asterisk } from "lucide-react";
-import { ActionButton } from "@/components/shared/buttons/button";
+import { ActionButton, FormButton } from "@/components/shared/buttons/button";
 import { Form } from "@/components/shared/form/form";
 
 export function LoginForm({
@@ -91,7 +91,7 @@ export function LoginForm({
           )}
         />
         <Field>
-          <ActionButton size={"lg"}>Login</ActionButton>
+          <FormButton size={"lg"} isPending={form.formState.isSubmitting}>Login</FormButton>
         </Field>
       </FieldGroup>
     </Form>

@@ -1,5 +1,6 @@
 "use client";
 
+import { FormSheet } from "@/components/shared/sheet/sheet";
 import { DataTable } from "@/components/shared/table/data-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,10 +12,19 @@ import {
 import { product } from "@/lib/generated/prisma";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { Eye, Trash } from "lucide-react";
+import { Edit, Eye, Trash } from "lucide-react";
 import React from "react";
+import ProductForm from "./product-form";
+import AlertModal from "@/components/shared/alert-dialog/alert-dialog";
+import { toast } from "sonner";
+import { deleteProduct } from "../action/product";
 
 export default function ProductTable({ data }: { data: product[] }) {
+  const [view, setView] = React.useState<product | boolean>(false);
+  const [del, setDel] = React.useState<string | boolean>(false);
+
+  const [pending, startTransition] = React.useTransition();
+
   const columns: ColumnDef<product>[] = [
     {
       accessorKey: "created_at",
@@ -40,7 +50,15 @@ export default function ProductTable({ data }: { data: product[] }) {
     {
       accessorKey: "status",
       header: "Status",
-      cell:({row}) => <Badge variant={row.original.status === 'delivered' ? 'success' : 'secondary'}>{row.original.status}</Badge>
+      cell: ({ row }) => (
+        <Badge
+          variant={
+            row.original.status === "delivered" ? "success" : "secondary"
+          }
+        >
+          {row.original.status}
+        </Badge>
+      ),
     },
     {
       accessorKey: "comment",
@@ -69,21 +87,24 @@ export default function ProductTable({ data }: { data: product[] }) {
                   variant={"outline"}
                   size={"icon-sm"}
                   className="text-primary"
+                  onClick={() => setView(value)}
                 >
-                  <Eye /> <span className="sr-only">View</span>
+                  <Edit /> <span className="sr-only">Edit</span>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>View</p>
+                <p>Edit</p>
               </TooltipContent>
             </Tooltip>
 
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
+                  disabled={pending}
                   variant={"outline"}
                   size={"icon-sm"}
                   className="text-destructive"
+                  onClick={() => setDel(value.id)}
                 >
                   <Trash /> <span className="sr-only">Delete</span>
                 </Button>
@@ -98,5 +119,39 @@ export default function ProductTable({ data }: { data: product[] }) {
     },
   ];
 
-  return <DataTable columns={columns} data={data} />;
+  return (
+    <>
+      <DataTable columns={columns} data={data} />
+
+      <FormSheet
+        open={!!view}
+        onOpenChange={setView}
+        formTitle="Import Procurement"
+      >
+        <ProductForm
+          prevData={typeof view !== "boolean" ? view : undefined}
+          onClose={() => setView(false)}
+        />
+      </FormSheet>
+
+      <AlertModal
+        open={!!del}
+        onOpenChange={setDel}
+        onAction={() => {
+          startTransition(async () => {
+            toast.promise(deleteProduct(typeof del !== "boolean" ? del : ""), {
+              loading: "Deleting",
+              success: (data) => {
+                if (!data.success) throw data;
+                return data.message;
+              },
+              error: (data) => {
+                return data.message;
+              },
+            });
+          });
+        }}
+      />
+    </>
+  );
 }
