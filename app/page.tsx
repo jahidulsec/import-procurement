@@ -1,7 +1,10 @@
-import React from 'react'
+import { getAuthUser } from "@/types/dal";
+import { redirect } from "next/navigation";
 
-export default function HomePage() {
-  return (
-    <div>HomePage</div>
-  )
+export default async function HomePage() {
+  const authUser = await getAuthUser();
+
+  if (!authUser) redirect("/login");
+
+  redirect("/dashboard");
 }

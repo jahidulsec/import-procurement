@@ -7,16 +7,6 @@ async function main() {
     const answers = await inquirer.prompt([
         {
             type: "input",
-            name: "name",
-            message: "Enter your name:",
-        },
-        {
-            type: "input",
-            name: "mobile",
-            message: "Enter your mobile:",
-        },
-        {
-            type: "input",
             name: "sap_id",
             message: "Enter your SAP ID:",
         },
@@ -30,7 +20,7 @@ async function main() {
             type: "list",
             name: "role",
             message: "Select your role:",
-            choices: ["superadmin", "admin", "mio"],
+            choices: ["superadmin", "admin"],
         },
     ]);
 
@@ -40,16 +30,11 @@ async function main() {
             sap_id: answers.sap_id,
             password: await hashPassword(answers.password),
             role: answers.role,
-            user_information: {
-                create: {
-                    full_name: answers.name, mobile: answers.mobile
-                }
-            }
         },
     });
 
     console.log(
-        `Welcome, ${answers.name}! You are signed up as ${answers.role}.`
+        `Welcome, ${answers.sap_id}! You are signed up as ${answers.role}.`
     );
 }
 

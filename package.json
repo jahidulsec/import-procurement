@@ -54,7 +54,7 @@
     "dotenv": "^17.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
-    "inquirer": "^13.0.2",
+    "inquirer": "^12.4.3",
     "prisma": "^6.2.1",
     "tailwindcss": "^4",
     "tsx": "^4.20.6",
