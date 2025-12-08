@@ -9,16 +9,16 @@ datasource db {
 }
 
 model product {
-  id            String    @id @default(nanoid()) @db.VarChar(21)
-  party_name    String    @db.VarChar(150)
-  invoice       String?   @db.VarChar(200)
-  lc_no         String    @db.VarChar(100)
-  remarks       String?   @db.Text
-  other_remarks String?   @db.Text
-  created_at    DateTime? @default(now()) @db.Timestamp(0)
-  updated_at    DateTime? @default(now()) @db.Timestamp(0)
-  comment       String?   @db.Text
-  status        String    @db.VarChar(50)
+  id            String         @id @default(nanoid()) @db.VarChar(21)
+  party_name    String         @db.VarChar(150)
+  invoice       String?        @db.VarChar(200)
+  lc_no         String         @db.VarChar(100)
+  remarks       String?        @db.Text
+  other_remarks String?        @db.Text
+  created_at    DateTime?      @default(now()) @db.Timestamp(0)
+  updated_at    DateTime?      @default(now()) @db.Timestamp(0)
+  comment       String?        @db.Text
+  status        product_status
 }
 
 model user {
@@ -32,4 +32,9 @@ model user {
 enum user_role {
   admin
   superadmin
+}
+
+enum product_status {
+  pending
+  delivered
 }

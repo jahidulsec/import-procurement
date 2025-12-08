@@ -1,8 +1,6 @@
-import React from 'react'
-import { Separator } from '../ui/separator'
-import { SidebarTrigger } from '../ui/sidebar'
+import { SidebarTrigger } from '@/components/ui/sidebar'
 import { NavUser } from './nav-user'
-import { SearchForm } from '../shared/inputs/search'
+import { Separator } from '@/components/ui/separator'
 
 const data = {
   user: {
