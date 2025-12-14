@@ -26,9 +26,10 @@ A modern and responsive **Web App** and **Admin Panel** built with **Next.js**, 
 │   ├── ui/              # feature name
 ├── hooks/               # Custom React hooks
 ├── providers/           # Custom React providers
-├── servers/             # App features
+├── features/            # App features
 │   ├── actions/         # server actions
-│   ├── lib/             # feautures apis
+│   ├── components/      # feautures apis
+│   ├── servers/         # feautures apis
 ├── lib/                 # lib functions
 ├── utils/               # Utility functions
 ├── public/              # Static files
