@@ -7,7 +7,7 @@ const DashboardSection = ({
 }: React.ComponentProps<"section">) => {
   return (
     <section
-      className={cn("md:w-[calc(100vw-var(--sidebar-width))] px-4", className)}
+      className={cn("md:group-data-[state=expanded]:w-[calc(100vw-var(--sidebar-width))] px-4", className)}
       {...props}
     />
   );
