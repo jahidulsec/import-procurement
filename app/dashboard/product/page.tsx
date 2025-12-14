@@ -1,12 +1,15 @@
 import { ErrorBoundary } from "@/components/shared/boundary/error-boundary";
+import { DateRangePicker } from "@/components/shared/calendar/date-range";
 import { SearchForm } from "@/components/shared/inputs/search";
 import PagePagination from "@/components/shared/pagination/pagination";
 import {
   DashboardSection,
   SectionActions,
   SectionContent,
+  SectionFilter,
   SectionHeader,
 } from "@/components/shared/section/section";
+import { Select } from "@/components/shared/select/select";
 import { TableSkeleton } from "@/components/shared/skeleton/table";
 import { SectionHeading } from "@/components/shared/typography/heading";
 import CreateProductButton from "@/features/product/components/create-button";
@@ -27,10 +30,33 @@ export default async function ProductPage({
           <SectionHeading>Products</SectionHeading>
 
           <SectionActions>
-            <SearchForm />
             <CreateProductButton />
           </SectionActions>
         </SectionHeader>
+
+        <SectionFilter>
+          <SectionActions>
+            <DateRangePicker />
+          </SectionActions>
+
+          <SectionActions>
+            <Select
+              paramsName="status"
+              data={[
+                {
+                  label: "pending",
+                  value: "pending",
+                },
+                {
+                  label: "delivered",
+                  value: "delivered",
+                },
+              ]}
+              placeholder="Select Status"
+            />
+            <SearchForm />
+          </SectionActions>
+        </SectionFilter>
 
         <SectionContent>
           <Suspense fallback={<TableSkeleton />}>
