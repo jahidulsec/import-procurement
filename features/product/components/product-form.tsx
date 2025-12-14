@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/shared/select/select";
-import { ActionButton, FormButton } from "@/components/shared/buttons/button";
+import { FormButton } from "@/components/shared/buttons/button";
 import { product } from "@/lib/generated/prisma";
 import { createProduct, updateProduct } from "../action/product";
 import { toast } from "sonner";

@@ -35,18 +35,18 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: House,
       isActive: true,
     },
     {
       title: "Projects",
-      url: "#",
+      url: "/dashboard/product",
       icon: BriefcaseBusiness,
     },
     {
       title: "Settings",
-      url: "#",
+      url: "/dashboard/settings",
       icon: Settings,
     },
   ],
