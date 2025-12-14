@@ -2,7 +2,7 @@
 
 import { db } from "@/config/db"
 import { response } from "@/lib/response"
-import { createSession } from "@/lib/session"
+import { createSession, deleteSession } from "@/lib/session"
 import { isValidPassword } from "@/utils/password"
 import { LoginType } from "./schema"
 
@@ -34,3 +34,19 @@ export const userLogin = async (data: LoginType) => {
         return response({ success: false, message: (error as Error).message ?? 'Something went wrong' })
     }
 }
+
+
+export const userLogout = async () => {
+    try {
+        await deleteSession();
+        return {
+            success: true,
+            message: "Your are successfully logged out",
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: (error as any).message,
+        };
+    }
+};

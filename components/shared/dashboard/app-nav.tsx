@@ -3,14 +3,6 @@ import { NavUser } from "./nav-user";
 import { Separator } from "@/components/ui/separator";
 import { getAuthUser } from "@/types/dal";
 
-const data = {
-  user: {
-    name: "John Doe",
-    role: "admin",
-    avatar: "/avatars/shadcn.jpg",
-  },
-};
-
 export default async function AppNav() {
   const authUser = await getAuthUser();
 

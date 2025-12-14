@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
-} from "lucide-react";
+import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -19,12 +12,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar";
+import { SidebarMenuButton } from "@/components/ui/sidebar";
+import { useTransition } from "react";
+import { toast } from "sonner";
+import { userLogout } from "@/features/login/action/login";
 
 export function NavUser({
   user,
@@ -35,7 +26,7 @@ export function NavUser({
     avatar: string;
   };
 }) {
-  const { isMobile } = useSidebar();
+  const [pending, startTransition] = useTransition();
 
   return (
     <DropdownMenu>
@@ -89,7 +80,21 @@ export function NavUser({
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem
+          disabled={pending}
+          onClick={() => {
+            startTransition(() => {
+              toast.promise(userLogout, {
+                loading: "Logging out...",
+                success: (data) => {
+                  if (!data.success) throw data;
+                  return data.message;
+                },
+                error: (data) => data.message,
+              });
+            });
+          }}
+        >
           <LogOut />
           Log out
         </DropdownMenuItem>
