@@ -24,47 +24,45 @@ export default async function ProductPage({
   searchParams: SearchParams;
 }) {
   return (
-    <>
-      <DashboardSection>
-        <SectionHeader>
-          <SectionHeading>Products</SectionHeading>
+    <DashboardSection>
+      <SectionHeader>
+        <SectionHeading>Products</SectionHeading>
 
-          <SectionActions>
-            <CreateProductButton />
-          </SectionActions>
-        </SectionHeader>
+        <SectionActions>
+          <CreateProductButton />
+        </SectionActions>
+      </SectionHeader>
 
-        <SectionFilter>
-          <SectionActions>
-            <DateRangePicker />
-          </SectionActions>
+      <SectionFilter>
+        <SectionActions>
+          <DateRangePicker />
+        </SectionActions>
 
-          <SectionActions>
-            <Select
-              paramsName="status"
-              data={[
-                {
-                  label: "pending",
-                  value: "pending",
-                },
-                {
-                  label: "delivered",
-                  value: "delivered",
-                },
-              ]}
-              placeholder="Select Status"
-            />
-            <SearchForm />
-          </SectionActions>
-        </SectionFilter>
+        <SectionActions>
+          <Select
+            paramsName="status"
+            data={[
+              {
+                label: "pending",
+                value: "pending",
+              },
+              {
+                label: "delivered",
+                value: "delivered",
+              },
+            ]}
+            placeholder="Select Status"
+          />
+          <SearchForm />
+        </SectionActions>
+      </SectionFilter>
 
-        <SectionContent>
-          <Suspense fallback={<TableSkeleton />}>
-            <TableSection searchParams={searchParams} />
-          </Suspense>
-        </SectionContent>
-      </DashboardSection>
-    </>
+      <SectionContent>
+        <Suspense fallback={<TableSkeleton />}>
+          <TableSection searchParams={searchParams} />
+        </Suspense>
+      </SectionContent>
+    </DashboardSection>
   );
 }
 

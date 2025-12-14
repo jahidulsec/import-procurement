@@ -9,68 +9,42 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { product } from "@/lib/generated/prisma";
+import { user } from "@/lib/generated/prisma";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { Edit, Eye, Trash } from "lucide-react";
+import { Edit, Trash, UserLock } from "lucide-react";
 import React from "react";
-import ProductForm from "./product-form";
 import AlertModal from "@/components/shared/alert-dialog/alert-dialog";
 import { toast } from "sonner";
-import { deleteProduct } from "../action/product";
+import { deleteUser } from "../action/user";
+import UserForm from "./user-form";
+import ResetPasswordForm from "./reset-password-form";
 
-export default function ProductTable({ data }: { data: product[] }) {
-  const [view, setView] = React.useState<product | boolean>(false);
+export default function UserTable({ data }: { data: user[] }) {
+  const [view, setView] = React.useState<user | boolean>(false);
+  const [resetPasword, setResetPasword] = React.useState<string | boolean>(
+    false
+  );
   const [del, setDel] = React.useState<string | boolean>(false);
 
   const [pending, startTransition] = React.useTransition();
 
-  const columns: ColumnDef<product>[] = [
+  const columns: ColumnDef<user>[] = [
     {
-      accessorKey: "created_at",
-      header: "Date Time",
-      cell: ({ row }) => (
-        <p>
-          {format(row.original.created_at as Date, "LLL dd, yyyy - h:mm aaa")}
-        </p>
-      ),
-    },
-    {
-      accessorKey: "party_name",
-      header: "Party Name",
-    },
-    {
-      accessorKey: "invoice",
-      header: "Proforma Invoice",
-    },
-    {
-      accessorKey: "lc_no",
-      header: "L/C no",
+      accessorKey: "sap_id",
+      header: "SAP ID",
     },
     {
       accessorKey: "status",
       header: "Status",
-      cell: ({ row }) => (
-        <Badge
-          variant={
-            row.original.status === "delivered" ? "success" : "secondary"
-          }
-        >
-          {row.original.status}
-        </Badge>
-      ),
+      cell: ({ row }) => <Badge variant={"outline"}>{row.original.role}</Badge>,
     },
     {
-      accessorKey: "comment",
-      header: "Comment",
+      accessorKey: "created_at",
+      header: "Date Time (Created)",
       cell: ({ row }) => (
         <p>
-          {row.original.comment
-            ? `${row.original.comment} at ${format(
-                row.original.updated_at as Date,
-                "LLL dd, yyyy - h:mm aaa"
-              )}`
-            : "-"}
+          {format(row.original.created_at as Date, "LLL dd, yyyy - h:mm aaa")}
         </p>
       ),
     },
@@ -100,11 +74,27 @@ export default function ProductTable({ data }: { data: product[] }) {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
+                  variant={"outline"}
+                  size={"icon-sm"}
+                  className="text-secondary"
+                  onClick={() => setResetPasword(value.sap_id)}
+                >
+                  <UserLock /> <span className="sr-only">Reset Password</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Reset Password</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
                   disabled={pending}
                   variant={"outline"}
                   size={"icon-sm"}
                   className="text-destructive"
-                  onClick={() => setDel(value.id)}
+                  onClick={() => setDel(value.sap_id)}
                 >
                   <Trash /> <span className="sr-only">Delete</span>
                 </Button>
@@ -123,14 +113,21 @@ export default function ProductTable({ data }: { data: product[] }) {
     <>
       <DataTable columns={columns} data={data} />
 
-      <FormSheet
-        open={!!view}
-        onOpenChange={setView}
-        formTitle="Edit Product"
-      >
-        <ProductForm
+      <FormSheet open={!!view} onOpenChange={setView} formTitle="Edit User">
+        <UserForm
           prevData={typeof view !== "boolean" ? view : undefined}
           onClose={() => setView(false)}
+        />
+      </FormSheet>
+
+      <FormSheet
+        open={!!resetPasword}
+        onOpenChange={setResetPasword}
+        formTitle="Reset Password"
+      >
+        <ResetPasswordForm
+          id={typeof resetPasword !== "boolean" ? resetPasword : ""}
+          onClose={() => setResetPasword(false)}
         />
       </FormSheet>
 
@@ -139,7 +136,7 @@ export default function ProductTable({ data }: { data: product[] }) {
         onOpenChange={setDel}
         onAction={() => {
           startTransition(async () => {
-            toast.promise(deleteProduct(typeof del !== "boolean" ? del : ""), {
+            toast.promise(deleteUser(typeof del !== "boolean" ? del : ""), {
               loading: "Deleting",
               success: (data) => {
                 if (!data.success) throw data;

@@ -1,3 +1,4 @@
+import { Footer } from "@/components/shared/footer/footer";
 import { Logo } from "@/components/shared/logo/logo";
 import { Loader } from "lucide-react";
 import Image from "next/image";
@@ -24,6 +25,7 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
         <main className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">{children}</div>
         </main>
+        <Footer />
       </div>
     </div>
   );

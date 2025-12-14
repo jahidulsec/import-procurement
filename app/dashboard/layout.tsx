@@ -1,5 +1,6 @@
 import AppNav from "@/components/shared/dashboard/app-nav";
 import { AppSidebar } from "@/components/shared/dashboard/app-sidebar";
+import { Footer } from "@/components/shared/footer/footer";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { getAuthUser } from "@/types/dal";
 import { redirect } from "next/navigation";
@@ -18,6 +19,7 @@ export default async function DashboardLayout({
       <SidebarInset>
         <AppNav />
         {children}
+        <Footer />
       </SidebarInset>
     </SidebarProvider>
   );
