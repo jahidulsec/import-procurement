@@ -22,7 +22,7 @@ export default function UserForm({
   onClose,
 }: {
   prevData?: user;
-  onClose: () => void;
+  onClose?: () => void;
 }) {
   const form = useForm<UserType>({
     resolver: zodResolver(UserSchema),
@@ -41,7 +41,7 @@ export default function UserForm({
     toast[res.success ? "success" : "error"](res.message);
 
     if (res.success) {
-      onClose();
+      onClose?.();
     }
   }
 
@@ -88,7 +88,7 @@ export default function UserForm({
           />
         )}
 
-        <FormButton type="submit" isPending={form.formState.isSubmitting}>
+        <FormButton type="submit" className={!onClose ? "w-fit min-w-[18rem]" : ''} isPending={form.formState.isSubmitting}>
           Save
         </FormButton>
       </FieldGroup>

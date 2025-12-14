@@ -22,7 +22,7 @@ export default function ResetPasswordForm({
   onClose,
 }: {
   id: string;
-  onClose: () => void;
+  onClose?: () => void;
 }) {
   const form = useForm<UserResetPasswordType>({
     resolver: zodResolver(UserResetPasswordSchema),
@@ -34,7 +34,7 @@ export default function ResetPasswordForm({
     toast[res.success ? "success" : "error"](res.message);
 
     if (res.success) {
-      onClose();
+      onClose?.();
     }
   }
 
@@ -59,7 +59,7 @@ export default function ResetPasswordForm({
           )}
         />
 
-        <FormButton type="submit" isPending={form.formState.isSubmitting}>
+        <FormButton type="submit" className={!onClose ? "w-fit min-w-[18rem]" : ""} isPending={form.formState.isSubmitting}>
           Save
         </FormButton>
       </FieldGroup>

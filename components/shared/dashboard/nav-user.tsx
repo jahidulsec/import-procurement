@@ -16,6 +16,7 @@ import { SidebarMenuButton } from "@/components/ui/sidebar";
 import { useTransition } from "react";
 import { toast } from "sonner";
 import { userLogout } from "@/features/login/action/login";
+import Link from "next/link";
 
 export function NavUser({
   user,
@@ -70,13 +71,11 @@ export function NavUser({
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BadgeCheck />
-            Account
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Bell />
-            Notifications
+          <DropdownMenuItem asChild>
+            <Link href={"/dashboard/account"}>
+              <BadgeCheck />
+              Account
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
