@@ -3,16 +3,28 @@
 import { db } from "@/config/db"
 import { Prisma, product } from "@/lib/generated/prisma"
 import { apiResponse } from "@/lib/response"
-import { QuerySchema, QuerySchemaType } from "@/schema/query"
 import { getCleanData } from "@/utils/formatter"
+import { ProductQuarySchema, ProductQuarySchemaType } from "../action/schema"
+import { fromZonedTime } from 'date-fns-tz'
+import { timeZone } from "@/utils/data"
+import { endOfDay, startOfDay } from "date-fns"
 
-const getProducts = async (data: QuerySchemaType) => {
+const getProducts = async (data: ProductQuarySchemaType) => {
+
+    let startDateUtc: Date | undefined;
+    let endDateUtc: Date | undefined;
+
     try {
-
         const cleanData = getCleanData(data)
 
         // validated searchparams
-        const params = QuerySchema.parse(cleanData)
+        const params = ProductQuarySchema.parse(cleanData)
+
+        // get date params
+        if (params.start && params.end) {
+            startDateUtc = fromZonedTime(startOfDay(params.start), timeZone)
+            endDateUtc = fromZonedTime(endOfDay(params.end), timeZone)
+        }
 
         // extract params
         const filter: Prisma.productWhereInput = {
@@ -34,7 +46,17 @@ const getProducts = async (data: QuerySchemaType) => {
                         }
                     }
                 ]
+            }),
+            ...(params.status && {
+                status: params.status
+            }),
+            ...(startDateUtc && endDateUtc && {
+                created_at: {
+                    gte: startDateUtc,
+                    lte: endDateUtc
+                }
             })
+
         }
 
         const [product, count] = await Promise.all([

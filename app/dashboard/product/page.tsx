@@ -73,12 +73,15 @@ const TableSection = async ({
 }: {
   searchParams: SearchParams;
 }) => {
-  const { page, size, search } = await searchParams;
+  const { page, size, search, start, end, status } = await searchParams;
 
   const res = await getProducts({
     page: Number(page),
     size: Number(size),
     search: search?.toString().trim(),
+    start: start?.toString() ? new Date(start?.toString()) : undefined,
+    end: end?.toString() ? new Date(end?.toString()) : undefined,
+    status: status?.toString() as "pending",
   });
 
   return (

@@ -1,3 +1,4 @@
+import { QuerySchema } from "@/schema/query";
 import z from "zod";
 
 export const ProductSchema = z.object({
@@ -9,5 +10,13 @@ export const ProductSchema = z.object({
     comment: z.string("Enter status comment").optional(),
     status: z.enum(['pending', 'delivered'], 'Select status')
 })
+
+export const ProductQuarySchema = QuerySchema.extend({
+    start: z.coerce.date().optional(),
+    end: z.coerce.date().optional(),
+    status: z.enum(["pending", 'delivered']).optional(),
+})
+
+export type ProductQuarySchemaType = z.infer<typeof ProductQuarySchema>
 
 export type ProductType = z.infer<typeof ProductSchema>
