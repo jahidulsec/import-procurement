@@ -79,7 +79,7 @@ const TableSection = async ({
     search: search?.toString().trim(),
     start: start?.toString() ? new Date(start?.toString()) : undefined,
     end: end?.toString() ? new Date(end?.toString()) : undefined,
-    status: status?.toString() as "pending",
+    status: status?.toString() as "lc_pending",
   });
 
   return (
