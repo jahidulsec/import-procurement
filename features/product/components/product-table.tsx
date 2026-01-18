@@ -18,6 +18,7 @@ import ProductForm from "./product-form";
 import AlertModal from "@/components/shared/alert-dialog/alert-dialog";
 import { toast } from "sonner";
 import { deleteProduct } from "../action/product";
+import { cn } from "@/lib/utils";
 
 export default function ProductTable({ data }: { data: product[] }) {
   const [view, setView] = React.useState<product | boolean>(false);
@@ -48,17 +49,58 @@ export default function ProductTable({ data }: { data: product[] }) {
       header: "L/C no",
     },
     {
+      accessorKey: "amount",
+      header: "Amount",
+      cell: ({ row }) => {
+        const value = Number(row.original.amount) || 0;
+        return (
+          <p>
+            ৳ {" "}
+            {new Intl.NumberFormat("en-IN", {
+              maximumFractionDigits: 2,
+            }).format(value)}
+          </p>
+        );
+      },
+    },
+    {
       accessorKey: "status",
       header: "Status",
-      cell: ({ row }) => (
-        <Badge
-          variant={
-            row.original.status === "delivered" ? "success" : "secondary"
-          }
-        >
-          {row.original.status}
-        </Badge>
-      ),
+      cell: ({ row }) => {
+        const status = row.original.status;
+        const label =
+          status === "lc_done"
+            ? "LC Done"
+            : status === "at_port"
+            ? "At the Port"
+            : status === "in_transit"
+            ? "In Transit"
+            : status === "delivered"
+            ? "Delivered"
+            : "LC Pending";
+        return (
+          <Badge
+            variant={
+              status === "delivered"
+                ? "success"
+                : status === "lc_pending"
+                ? "secondary"
+                : "outline"
+            }
+            className={cn(
+              status === "lc_done"
+                ? "bg-yellow-100 text-yellow-700 border-transparent"
+                : status === "in_transit"
+                ? "bg-blue-50 text-blue-700 border-0"
+                : status === "at_port"
+                ? "bg-lime-100 text-lime-700 border-0"
+                : ""
+            )}
+          >
+            {label}
+          </Badge>
+        );
+      },
     },
     {
       accessorKey: "comment",
@@ -123,11 +165,7 @@ export default function ProductTable({ data }: { data: product[] }) {
     <>
       <DataTable columns={columns} data={data} />
 
-      <FormSheet
-        open={!!view}
-        onOpenChange={setView}
-        formTitle="Edit Product"
-      >
+      <FormSheet open={!!view} onOpenChange={setView} formTitle="Edit Product">
         <ProductForm
           prevData={typeof view !== "boolean" ? view : undefined}
           onClose={() => setView(false)}

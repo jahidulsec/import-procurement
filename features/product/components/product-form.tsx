@@ -16,6 +16,7 @@ import { FormButton } from "@/components/shared/buttons/button";
 import { product } from "@/lib/generated/prisma";
 import { createProduct, updateProduct } from "../action/product";
 import { toast } from "sonner";
+import Image from "next/image";
 
 export default function ProductForm({
   prevData,
@@ -32,8 +33,9 @@ export default function ProductForm({
       lc_no: prevData?.lc_no,
       remarks: prevData?.remarks ?? undefined,
       comment: prevData?.comment ?? undefined,
+      amount: prevData?.amount ? Number(prevData.amount) : undefined,
       other_remarks: prevData?.other_remarks ?? undefined,
-      status: prevData?.status ?? "pending",
+      status: prevData?.status ?? "lc_pending",
     },
   });
 
@@ -107,6 +109,44 @@ export default function ProductForm({
 
         <Controller
           control={form.control}
+          name="amount"
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>Amount</FieldLabel>
+              <div className="relative">
+                <Input
+                  className="pl-10"
+                  defaultValue={
+                    prevData?.amount ? Number(prevData.amount) : undefined
+                  }
+                  value={field.value}
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      const value = Number(e.target.value);
+                      field.onChange(value);
+                    }
+                  }}
+                  type="number"
+                  id={field.name}
+                  aria-invalid={fieldState.invalid}
+                  placeholder="e.g. 10000"
+                  autoComplete="off"
+                />
+                <Image
+                  width={14}
+                  height={14}
+                  src={"/icons/taka.png"}
+                  alt="taka"
+                  className="absolute top-1/2 -translate-y-1/2 left-3 pointer-events-none"
+                />
+              </div>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
+        <Controller
+          control={form.control}
           name="remarks"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
@@ -171,8 +211,20 @@ export default function ProductForm({
                 onValueChange={(value) => field.onChange(value)}
                 data={[
                   {
-                    label: "Pending",
-                    value: "pending",
+                    label: "LC Pending",
+                    value: "lc_pending",
+                  },
+                  {
+                    label: "LC Done",
+                    value: "lc_done",
+                  },
+                  {
+                    label: "In Transit",
+                    value: "in_transit",
+                  },
+                  {
+                    label: "At the Port",
+                    value: "at_port",
                   },
                   {
                     label: "Delivered",

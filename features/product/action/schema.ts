@@ -8,7 +8,8 @@ export const ProductSchema = z.object({
     remarks: z.string("Enter remarks").optional(),
     other_remarks: z.string("Enter other remarks").optional(),
     comment: z.string("Enter status comment").optional(),
-    status: z.enum(['pending', 'delivered'], 'Select status')
+    status: z.enum(['lc_pending', 'lc_done', 'in_transit', 'at_port', 'delivered'], 'Select status'),
+    amount: z.number('Enter valid amount').optional()
 })
 
 export const ProductQuarySchema = QuerySchema.extend({
