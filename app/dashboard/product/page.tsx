@@ -15,6 +15,7 @@ import { SectionHeading } from "@/components/shared/typography/heading";
 import CreateProductButton from "@/features/product/components/create-button";
 import ProductTable from "@/features/product/components/product-table";
 import { getProducts } from "@/features/product/server/product";
+import { productStatus } from "@/lib/data";
 import { SearchParams } from "@/types/search-params";
 import React, { Suspense } from "react";
 
@@ -41,16 +42,7 @@ export default async function ProductPage({
         <SectionActions>
           <Select
             paramsName="status"
-            data={[
-              {
-                label: "pending",
-                value: "pending",
-              },
-              {
-                label: "delivered",
-                value: "delivered",
-              },
-            ]}
+            data={productStatus}
             placeholder="Select Status"
           />
           <SearchForm />

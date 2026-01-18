@@ -17,6 +17,7 @@ import { product } from "@/lib/generated/prisma";
 import { createProduct, updateProduct } from "../action/product";
 import { toast } from "sonner";
 import Image from "next/image";
+import { productStatus } from "@/lib/data";
 
 export default function ProductForm({
   prevData,
@@ -209,28 +210,7 @@ export default function ProductForm({
                 value={field.value}
                 defaultValue={prevData?.status}
                 onValueChange={(value) => field.onChange(value)}
-                data={[
-                  {
-                    label: "LC Pending",
-                    value: "lc_pending",
-                  },
-                  {
-                    label: "LC Done",
-                    value: "lc_done",
-                  },
-                  {
-                    label: "In Transit",
-                    value: "in_transit",
-                  },
-                  {
-                    label: "At the Port",
-                    value: "at_port",
-                  },
-                  {
-                    label: "Delivered",
-                    value: "delivered",
-                  },
-                ]}
+                data={productStatus}
                 aria-invalid={fieldState.invalid}
                 placeholder="Select Status"
                 autoComplete="off"

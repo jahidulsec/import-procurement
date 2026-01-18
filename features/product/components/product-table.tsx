@@ -19,6 +19,7 @@ import AlertModal from "@/components/shared/alert-dialog/alert-dialog";
 import { toast } from "sonner";
 import { deleteProduct } from "../action/product";
 import { cn } from "@/lib/utils";
+import { productStatus } from "@/lib/data";
 
 export default function ProductTable({ data }: { data: product[] }) {
   const [view, setView] = React.useState<product | boolean>(false);
@@ -55,7 +56,7 @@ export default function ProductTable({ data }: { data: product[] }) {
         const value = Number(row.original.amount) || 0;
         return (
           <p>
-            ৳ {" "}
+            ৳{" "}
             {new Intl.NumberFormat("en-IN", {
               maximumFractionDigits: 2,
             }).format(value)}
@@ -68,16 +69,9 @@ export default function ProductTable({ data }: { data: product[] }) {
       header: "Status",
       cell: ({ row }) => {
         const status = row.original.status;
-        const label =
-          status === "lc_done"
-            ? "LC Done"
-            : status === "at_port"
-            ? "At the Port"
-            : status === "in_transit"
-            ? "In Transit"
-            : status === "delivered"
-            ? "Delivered"
-            : "LC Pending";
+        const label = productStatus.find(
+          (item) => item.value === status
+        )?.label;
         return (
           <Badge
             variant={
