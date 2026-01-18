@@ -15,7 +15,7 @@ export const ProductSchema = z.object({
 export const ProductQuarySchema = QuerySchema.extend({
     start: z.coerce.date().optional(),
     end: z.coerce.date().optional(),
-    status: z.enum(["pending", 'delivered']).optional(),
+    status: z.enum(['lc_pending', 'lc_done', 'in_transit', 'at_port', 'delivered'], 'Select status').optional(),
 })
 
 export type ProductQuarySchemaType = z.infer<typeof ProductQuarySchema>
