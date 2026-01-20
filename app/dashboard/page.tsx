@@ -7,7 +7,7 @@ import { SectionHeading } from "@/components/shared/typography/heading";
 import { db } from "@/config/db";
 import ProductTable from "@/features/product/components/product-table";
 import { getProducts } from "@/features/product/server/product";
-import { BanknoteArrowDown, ClockFading, Wallet } from "lucide-react";
+import { BanknoteArrowDown, ClockCheck, ClockFading, Container, Ship, Truck, Wallet } from "lucide-react";
 import { Suspense } from "react";
 
 export default function DashboardHomePage() {
@@ -36,24 +36,40 @@ const CardSection = async () => {
   const data = {
     delivered:
       count.filter((item) => item.status === "delivered")?.[0]?._count ?? 0,
-    pending: count.filter((item) => item.status === "lc_pending")?.[0]?._count ?? 0,
+    lcPending:
+      count.filter((item) => item.status === "lc_pending")?.[0]?._count ?? 0,
+    lcDone: count.filter((item) => item.status === "lc_done")?.[0]?._count ?? 0,
+    atPort: count.filter((item) => item.status === "at_port")?.[0]?._count ?? 0,
+    inTransit: count.filter((item) => item.status === "in_transit")?.[0]?._count ?? 0,
   };
 
   return (
-    <div className="grid auto-rows-min gap-4 md:grid-cols-3 px-4">
+    <div className="grid auto-rows-min gap-4 md:grid-cols-2 lg:grid-cols-5 px-4">
       <DashbaordCard
-        title="Total Projects"
-        amount={data.pending + data.delivered}
-        icon={Wallet}
-      />
-      <DashbaordCard
-        className="text-secondary bg-secondary/10"
-        title="Pending Deliveries"
-        amount={data.pending}
+      className="text-secondary bg-secondary/10"
+        title="LC Pending"
+        amount={data.lcPending}
         icon={ClockFading}
       />
       <DashbaordCard
-        className="text-success bg-success/10"
+        className="bg-yellow-100 text-yellow-700"
+        title="LC Done"
+        amount={data.lcDone}
+        icon={Wallet}
+      />
+      <DashbaordCard
+        title="In Transit"
+        amount={data.inTransit}
+        icon={Ship}
+      />
+      <DashbaordCard
+        className="text-lime-700 bg-lime-100"
+        title="At Port"
+        amount={data.atPort}
+        icon={Container}
+      />
+      <DashbaordCard
+        className="text-green-700 bg-green-100"
         title="Completed Deliveries"
         amount={data.delivered}
         icon={BanknoteArrowDown}
